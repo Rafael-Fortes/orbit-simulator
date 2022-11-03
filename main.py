@@ -20,11 +20,11 @@ while True:
         if event.type == pygame.QUIT:
             exit()
             
-        elif event.type == pygame.MOUSEBUTTONUP:
+        if pygame.mouse.get_pressed()[0]:
             mouse_position = pygame.mouse.get_pos()
             game.create_random_object(mouse_position)
 
-        elif event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p:
                 paused = not paused
 

@@ -4,35 +4,36 @@ from math import sqrt
 
 class Object:
     def __init__(self, is_planet:bool, position:list, mass:int, direction:list=[0,0], origin:list=[0,0]):
-
+        # define the sprite
         if is_planet:
             self.obj_surface = pygame.transform.scale(pygame.image.load("assets/sprites/17.png"), (256, 256))
         else:
             self.obj_surface = pygame.transform.scale(pygame.image.load("assets/sprites/10.png"), (16, 16))
 
+        
         self.obj_rect = self.obj_surface.get_rect(center=position)
-
         self.sprite = pygame.sprite.Sprite()
         self.sprite.image = self.obj_surface
         self.sprite.rect = self.obj_rect
 
+        # set main config
         self.position = position
         self.mass = mass
         self.direction = direction
         self.origin = origin
+        self.is_moving = True
+        self.old_positions = []
         self.relative_pos = self.get_relative_pos(
             origin=self.origin,
             position=self.position
         )
-        
-        self.is_moving = True
-        self.old_positions = []
 
         distance = self.get_distance(origin=self.origin)
         self.speed_up = self.get_acceleration(p_mass=1, distance=distance, g=10)
 
     
     def get_relative_pos(self, origin:list, position:list):
+        # get the position in relative to the planet
         x = position[0] - origin[0]
         y = origin[1] - position[1]
         pos = [x, y]
@@ -41,6 +42,7 @@ class Object:
 
     
     def get_real_pos(self, origin:list, position:list):
+        # get the position on the screen
         x = position[0] + origin[0]
         y = origin[1] - position[1]
         pos = [x, y]
@@ -49,6 +51,7 @@ class Object:
     
 
     def get_distance(self, origin:list):
+        # get the distance relative o the planet
         x = self.relative_pos[0]
         y = self.relative_pos[1]
         sum_of_square = (x ** 2) + (y ** 2)
@@ -61,6 +64,7 @@ class Object:
     
 
     def get_acceleration(self, p_mass:int, distance:float, g:float):
+        # calculate the acceleration
         gravity_force = (p_mass * self.mass) / (distance ** 2)
         gravity_force = g * gravity_force
 
@@ -93,17 +97,18 @@ class Object:
             self.obj_rect = self.obj_surface.get_rect(center=self.position)
             self.sprite.rect = self.obj_rect
 
+            # saves all positions that the object was 
             self.old_positions.append(tuple(self.position))
 
     
     def draw(self, screen, show_path: bool):
-        if show_path and self.is_moving:
-            if len(self.old_positions) > 1:
-                pygame.draw.aalines(
-                    surface=screen,
-                    color=(255, 255, 255),
-                    closed=False,
-                    points=self.old_positions)
+        # draw the object and trail
+        if show_path and len(self.old_positions) > 1:
+            pygame.draw.aalines(
+                surface=screen,
+                color=(255, 255, 255),
+                closed=False,
+                points=self.old_positions)
 
         screen.blit(self.obj_surface, self.obj_rect)
     
