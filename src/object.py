@@ -26,6 +26,7 @@ class Object:
         )
         
         self.is_moving = True
+        self.old_positions = []
 
         distance = self.get_distance(origin=self.origin)
         self.speed_up = self.get_acceleration(p_mass=1, distance=distance, g=10)
@@ -92,9 +93,20 @@ class Object:
             self.obj_rect = self.obj_surface.get_rect(center=self.position)
             self.sprite.rect = self.obj_rect
 
+            self.old_positions.append(tuple(self.position))
+
     
-    def draw(self, screen):
+    def draw(self, screen, show_path: bool):
+        if show_path and self.is_moving:
+            if len(self.old_positions) > 1:
+                pygame.draw.aalines(
+                    surface=screen,
+                    color=(255, 255, 255),
+                    closed=False,
+                    points=self.old_positions)
+
         screen.blit(self.obj_surface, self.obj_rect)
+    
     
     
 

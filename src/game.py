@@ -35,10 +35,15 @@ class Game:
     def draw(self):
         self.screen.fill(self.bg_color)
 
-        self.planet.draw(self.screen)
+        self.planet.draw(self.screen, show_path=False)
 
-        for obj in self.objects:
-            obj.draw(self.screen)
+        for pos, obj in enumerate(self.objects):
+            if pos == self.obj_qnt - 1:
+                show_path = True
+            else:
+                show_path = False
+                
+            obj.draw(self.screen, show_path=show_path)
 
         self.update_text()
 
