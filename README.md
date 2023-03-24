@@ -1,8 +1,10 @@
-![header](https://github.com/Rafael-Fortes/orbit-simulator/blob/main/assets/images/Banner.jpeg)
+# Orbit Simulator
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/Rafael-Fortes/orbit-simulator/blob/main/LICENSE) 
 
+## About project
 > Status: Complete ✅
 
-### Simulates the orbit of an object in relative to a planet
+A program that simulates an orbit of a rock around the planet. Python, Pygame library and gravity equations were used to build the project.
 
 ## Some features
 
